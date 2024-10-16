@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Posts</h1>
+
+<div id="posts">
+  <% @posts.each do |post| %>
+    <%= render post %>
+    <p>
+      <%= link_to 'Ver Post', post_path(post.encrypted_id) %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "Nuevo post", new_post_path %>
