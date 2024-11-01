@@ -6,7 +6,8 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find_by!(encrypted_id_string: params[:id])
+    # @post = Post.find(params[:id])
+    # @encrypted_id = @post.encrypted_id_string
   end
 
   def new
@@ -14,17 +15,21 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @post = Post.find_by(encrypted_id_string: params[:id])
   end
 
   def create
     @post = Post.new(post_params)
-
+  
     respond_to do |format|
-      if @post.save
-        format.html { redirect_to @post, notice: "Post was successfully created." }
+      if @post.save  
+        format.html { redirect_to @post, notice: "El post se ha creado exitosamente." }
         format.json { render :show, status: :created, location: @post }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { 
+          flash.now[:alert] = "Hubo un error al crear el post. Por favor, revisa los errores." 
+          render :new, status: :unprocessable_entity 
+        }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
@@ -33,7 +38,7 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to @post, notice: "Post was successfully updated." }
+        format.html { redirect_to post_url(@post), notice: "Union member was successfully updated." }
         format.json { render :show, status: :ok, location: @post }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,13 +59,14 @@ class PostsController < ApplicationController
   private
 
     def set_post
-      @post = Post.find_by(encrypted_id_string: params[:id])  
-      if @post.nil?
-        redirect_to posts_path, alert: "Post no encontrado."
-      end
+      @post = if params[:id].to_i.to_s == params[:id]
+                Post.find(params[:id])
+              else
+                Post.find_by!(encrypted_id_string: params[:id])
+              end
     end
 
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, :encrypted_id_string)
     end
 end

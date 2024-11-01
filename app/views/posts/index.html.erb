@@ -6,7 +6,7 @@
   <% @posts.each do |post| %>
     <%= render post %>
     <p>
-      <%= link_to 'Ver Post', post_path(post.encrypted_id) %>
+      <%= link_to 'Ver Post', post_path(post.encrypted_id_string) %>
     </p>
   <% end %>
 </div>

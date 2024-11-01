@@ -1,14 +1,11 @@
 class Post < ApplicationRecord
-  include BCrypt
-  before_save :encrypt_id
+  require 'bcrypt'
 
-  def encrypted_id
-    encrypted_id_string || BCrypt::Password.create(id.to_s).to_s
-  end
+  after_create :encrypt_id
 
   private
 
   def encrypt_id
-    self.encrypted_id_string = BCrypt::Password.create(id.to_s)
+    update_column(:encrypted_id_string, BCrypt::Password.create(self.id.to_s))
   end
 end

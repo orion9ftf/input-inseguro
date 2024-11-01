@@ -3,8 +3,12 @@
 <%= render @post %>
 
 <div>
-  <%= link_to "Editar este Post", edit_post_path(@post) %> |
+  <%#= link_to "Editar este Post", edit_post_path(@post) %> |
   <%= link_to "Volver a los Post", posts_path %>
 
+  <%= link_to 'Editar Post', edit_post_path(@post.encrypted_id_string) %>
   <%= button_to "Eliminar este Post", @post, method: :delete %>
 </div>
+
+<%#= link_to 'Show', post_path(post.encrypted_id_string) %>
+<%#= link_to 'Edit', edit_post_path(post.encrypted_id_string) %>
