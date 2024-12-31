@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    # @post = Post.find(params[:id])
+    # @post = Post.find(set_post)
     # @encrypted_id = @post.encrypted_id_string
   end
 
@@ -59,13 +59,10 @@ class PostsController < ApplicationController
   private
 
     def set_post
-      @post = if params[:id].to_i.to_s == params[:id]
-                Post.find(params[:id])
-              else
-                Post.find_by!(encrypted_id_string: params[:id])
-              end
+      @post = Post.find_by(encrypted_id_string: params[:id]) || Post.find(params[:id])
+      raise ActiveRecord::RecordNotFound, 'Post not found' unless @post
     end
-
+  
     def post_params
       params.require(:post).permit(:title, :body, :encrypted_id_string)
     end

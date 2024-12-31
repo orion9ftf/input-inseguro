@@ -13,6 +13,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'digest'
 gem "tzinfo-data", platforms: %i[ mswin mswin64 mingw x64_mingw jruby ]
 gem "bootsnap", require: false
+gem 'rack-attack'#, '~> 6.5.0'
+
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
