@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
   require 'bcrypt'
+  require 'base64'
   after_create :encrypt_id
   
   def to_param
